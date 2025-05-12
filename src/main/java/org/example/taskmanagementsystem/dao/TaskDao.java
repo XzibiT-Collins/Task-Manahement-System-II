@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.example.taskmanagementsystem.db.DatabaseConnector;
@@ -14,6 +15,11 @@ public class TaskDao {
 
     private final Connection connection;
     public TaskDao() throws SQLException {
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            logger.log(Level.SEVERE, "Driver not found", e);
+        }
         this.connection = DatabaseConnector.getConnection();
     }
 
