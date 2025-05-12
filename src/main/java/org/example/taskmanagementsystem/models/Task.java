@@ -17,6 +17,14 @@ public class Task {
         this.status = status;
         this.dueDate = dueDate;
     }
+    public Task(int id,int userId,String title, String description, String status, Date dueDate) {
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.dueDate = dueDate;
+    }
 
     //getters
     public int getId() {
@@ -45,5 +53,9 @@ public class Task {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

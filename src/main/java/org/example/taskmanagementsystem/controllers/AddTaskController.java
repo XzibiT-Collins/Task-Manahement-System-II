@@ -10,8 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.taskmanagementsystem.models.Task;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(name = "AddTaskController", value = "/addTask")
@@ -19,11 +22,28 @@ public class AddTaskController extends HttpServlet{
     private final Logger logger = Logger.getLogger(AddTaskController.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        try {
+            TaskDao taskDao = new TaskDao();
+            List<Task> taskList = taskDao.getAllTasks(); // get all Tasks
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("templates/views/addTask.jsp");
-        requestDispatcher.forward(request,response);
+            System.out.println(taskList);
+            // Add taskList to request scope
+            request.setAttribute("taskList", taskList);
+
+            // Forward to JSP
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/templates/addTask.jsp");
+            requestDispatcher.forward(request, response);
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
+            out.println("<html><body>");
+            out.println("<h1>An Error occurred</h1>");
+            out.println("</body></html>");
+        }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
@@ -35,14 +55,12 @@ public class AddTaskController extends HttpServlet{
         Date dueDate = Date.valueOf(request.getParameter("dueDate"));
 
         try{
-            Task task = new Task(userId,title,description,status,dueDate);
-
-            //Dao to handle task creation
             TaskDao taskDao = new TaskDao();
-
+            //create a task object
+            Task task = new Task(userId,title,description,status,dueDate);
             taskDao.addTask(task); //creates the task in db
 
-            response.sendRedirect(request.getContextPath() +"/tasks");
+            response.sendRedirect(request.getContextPath() +"/addTask"); // redirect user
         }catch (SQLException e){
             logger.info("Error creating task: "+ e.getMessage());
         }
