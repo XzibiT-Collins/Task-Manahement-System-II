@@ -14,13 +14,14 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-@WebServlet("/addTask")
+@WebServlet(name = "AddTaskController", value = "/addTask")
 public class AddTaskController extends HttpServlet{
     private final Logger logger = Logger.getLogger(AddTaskController.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/views/addTask.jsp");
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("templates/views/addTask.jsp");
         requestDispatcher.forward(request,response);
     }
 
@@ -34,8 +35,7 @@ public class AddTaskController extends HttpServlet{
         Date dueDate = Date.valueOf(request.getParameter("dueDate"));
 
         try{
-//          Task task = new Task(userId,title,description,status,dueDate);
-            Task task = new Task(1,"Test","Test","Test",null);
+            Task task = new Task(userId,title,description,status,dueDate);
 
             //Dao to handle task creation
             TaskDao taskDao = new TaskDao();
