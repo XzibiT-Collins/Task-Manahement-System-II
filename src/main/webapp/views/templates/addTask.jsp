@@ -131,7 +131,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="index.jsp">Task Manager</a>
+        <a class="navbar-brand" href="index.jsp">NovaTech Task Manager</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -141,7 +141,7 @@
                     <a class="nav-link" href="index.jsp">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="task-management.jsp">Manage Tasks</a>
+                    <a class="nav-link active" href="index.jsp">Manage Tasks</a>
                 </li>
             </ul>
         </div>
@@ -151,7 +151,7 @@
 <!-- Page Header -->
 <header class="page-header text-center">
     <div class="container">
-        <h1 class="fw-bold">Task Management</h1>
+        <h1 class="fw-bold">NovaTech Task Management</h1>
         <p class="lead">Create and manage your tasks in one place</p>
     </div>
 </header>
@@ -165,30 +165,30 @@
         <div class="card-body">
             <form action="<%= request.getContextPath() %>/addTask" method="post">
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                    <div class="form-floating col-md-6">
+                        <input type="text" class="form-control" id="floatingInput" name="title" required>
+                        <label for="floatingInput" class="form-label">Title</label>
                     </div>
-                    <div class="col-md-6">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status" required>
+                    <div class="form-floating col-md-6">
+                        <select class="form-select" id="floatingSelect" name="status" required>
                             <option value="">Select status</option>
                             <option value="Pending">Pending</option>
                             <option value="In Progress">In Progress</option>
                             <option value="Completed">Completed</option>
                         </select>
+                        <label for="floatingSelect" class="form-label">Status</label>
                     </div>
-                    <div class="col-md-12">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    <div class="form-floating col-md-12">
+                        <textarea class="form-control" id="floatingTextarea" name="description" rows="3"></textarea>
+                        <label for="floatingTextarea" class="form-label">Description</label>
                     </div>
-                    <div class="col-md-6">
-                        <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="dueDate" name="dueDate" required>
+                    <div class="form-floating col-md-6">
+                        <input type="date" class="form-control" id="floatingInput" name="dueDate" required>
+                        <label for="dueDate" class="floatingInput">Due Date</label>
                     </div>
-                    <div class="col-md-6">
-                        <label for="userId" class="form-label">Assigned To (User ID)</label>
-                        <input type="number" class="form-control" id="userId" name="userId" required>
+                    <div class="form-floating col-md-6">
+                        <input type="number" class="form-control" id="floatingInput" name="userId" required>
+                        <label for="floatingInput" class="form-label">Assigned To (User ID)</label>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Create Task</button>

@@ -108,14 +108,16 @@ public class TaskDao {
     }
 
     public void updateTask(Task task) throws SQLException{
-        String query = "UPDATE task SET title = ?, description = ?, status = ?, due_date = ? WHERE id = ? AND user_id = ?";
+
+        System.out.println("id:" + task.getId());
+        String query = "UPDATE task SET title = ?, description = ?, status = ?, due_date = ?, user_id = ? WHERE id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,task.getTitle());
             preparedStatement.setString(2,task.getDescription());
             preparedStatement.setString(3,task.getStatus());
             preparedStatement.setDate(4,task.getDueDate());
-            preparedStatement.setInt(5,task.getId());
-            preparedStatement.setInt(6,task.getUserId());
+            preparedStatement.setInt(5,task.getUserId());
+            preparedStatement.setInt(6,task.getId());
 
             preparedStatement.executeUpdate();
             logger.info("Task updated successfully");
