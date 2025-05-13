@@ -13,17 +13,13 @@ import java.util.logging.Logger;
 
 public class EmployeeDao {
     private final Logger logger = Logger.getLogger(EmployeeDao.class.getName());
-    private final Connection connection;
-
-    public EmployeeDao() throws SQLException {
-        this.connection = DatabaseConnector.getConnection();
-    }
 
     //get employee by ID
     public Employee getEmployeeById(int id) throws SQLException {
         String query = "SELECT * FROM user WHERE id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1,id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -46,7 +42,8 @@ public class EmployeeDao {
     public void addEmployee(Employee employee) throws SQLException{
         String query = "INSERT INTO user(first_name,last_name) VALUES(?,?)";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,employee.getFirstName());
             preparedStatement.setString(2,employee.getLastName());
 
@@ -61,7 +58,8 @@ public class EmployeeDao {
     public void updateEmployee(Employee employee) throws SQLException{
         String query = "UPDATE user SET first_name = ?, last_name = ? WHERE id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,employee.getFirstName());
 
             preparedStatement.executeUpdate();
@@ -75,7 +73,8 @@ public class EmployeeDao {
     public void deleteEmployee(int id) throws SQLException{
         String query = "DELETE FROM user WHERE id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1,id);
 
             preparedStatement.executeUpdate();
@@ -90,7 +89,8 @@ public class EmployeeDao {
         String query = "SELECT * FROM user";
         List<Employee> employeesList = new ArrayList<>();
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Employee employee = new Employee(

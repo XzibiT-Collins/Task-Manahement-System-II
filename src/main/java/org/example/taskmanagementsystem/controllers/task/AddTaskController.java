@@ -1,5 +1,6 @@
-package org.example.taskmanagementsystem.controllers;
+package org.example.taskmanagementsystem.controllers.task;
 
+import org.example.taskmanagementsystem.dao.EmployeeDao;
 import org.example.taskmanagementsystem.dao.TaskDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -7,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.taskmanagementsystem.models.Employee;
 import org.example.taskmanagementsystem.models.Task;
 
 import java.io.IOException;
@@ -28,9 +30,13 @@ public class AddTaskController extends HttpServlet{
             TaskDao taskDao = new TaskDao();
             List<Task> taskList = taskDao.getAllTasks(); // get all Tasks
 
-            System.out.println(taskList);
+            //Get all employees from db
+            EmployeeDao employeeDao = new EmployeeDao();
+            List<Employee> employeeList = employeeDao.getAllEmployees();
+
             // Add taskList to request scope
             request.setAttribute("taskList", taskList);
+            request.setAttribute("employeeList", employeeList);
 
             // Forward to JSP
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/templates/addTask.jsp");

@@ -1,4 +1,4 @@
-package org.example.taskmanagementsystem.controllers;
+package org.example.taskmanagementsystem.controllers.task;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
