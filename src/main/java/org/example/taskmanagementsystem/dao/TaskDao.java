@@ -15,21 +15,13 @@ import org.example.taskmanagementsystem.models.Task;
 public class TaskDao {
     Logger logger = Logger.getLogger(TaskDao.class.getName());
 
-    private final Connection connection;
-    public TaskDao() throws SQLException {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            logger.log(Level.SEVERE, "Driver not found", e);
-        }
-        this.connection = DatabaseConnector.getConnection();
-    }
-
     //get Task by ID
     public Task getTaskById(int id) throws SQLException {
         String query = "SELECT * FROM task WHERE id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)){
+
             preparedStatement.setInt(1,id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -54,7 +46,8 @@ public class TaskDao {
         System.out.println("Adding task");
         String query = "INSERT INTO task(title,description,status,due_date,user_id) VALUES(?,?,?,?,?)";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,task.getTitle());
             preparedStatement.setString(2,task.getDescription());
             preparedStatement.setString(3,task.getStatus());
@@ -73,7 +66,8 @@ public class TaskDao {
 
     public List<Task> getAllTasks()throws SQLException{
         String query = "SELECT * FROM task";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             List<Task> tasksList = new ArrayList<>();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -97,7 +91,8 @@ public class TaskDao {
 
     public void deleteTask(int id) throws SQLException{
         String query = "DELETE FROM task WHERE id = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
 
@@ -111,7 +106,8 @@ public class TaskDao {
 
         System.out.println("id:" + task.getId());
         String query = "UPDATE task SET title = ?, description = ?, status = ?, due_date = ?, user_id = ? WHERE id = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try(Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,task.getTitle());
             preparedStatement.setString(2,task.getDescription());
             preparedStatement.setString(3,task.getStatus());

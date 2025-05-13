@@ -127,10 +127,10 @@
         <div class="col-md-4">
             <div class="card feature-card p-4">
                 <div class="card-body text-center">
-                    <div class="feature-icon">🔍</div>
-                    <h3 class="card-title">Task Details</h3>
-                    <p class="card-text">View detailed information about each task and make updates as needed.</p>
-                    <a href="<%= request.getContextPath() %>/addTask" class="btn btn-primary">Explore Tasks</a>
+                    <div class="feature-icon">👥</div>
+                    <h3 class="card-title">Employees</h3>
+                    <p class="card-text">Create and manage employees.</p>
+                    <a href="<%= request.getContextPath() %>/addEmployee" class="btn btn-primary">Manage Employees</a>
                 </div>
             </div>
         </div>

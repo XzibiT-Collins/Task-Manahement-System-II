@@ -1,9 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="org.example.taskmanagementsystem.models.Task" %>
 <%@ page import="org.example.taskmanagementsystem.models.Employee" %>
-<%@ page import="org.example.taskmanagementsystem.dao.EmployeeDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<Task> taskList = (List<Task>) request.getAttribute("taskList"); %>
 <% List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList"); %>
 <!DOCTYPE html>
 <html lang="en">
@@ -163,48 +160,22 @@
     <!-- Create Task Section -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Create New Task</span>
+            <span>Create New Employee</span>
         </div>
         <div class="card-body">
-            <form action="<%= request.getContextPath() %>/addTask" method="post">
+            <form action="<%= request.getContextPath() %>/addEmployee" method="post">
                 <div class="row g-3">
                     <div class="form-floating col-md-6">
-                        <input type="text" class="form-control" id="floatingInput" name="title" required>
-                        <label for="floatingInput" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="floatingInput" name="first_name" required>
+                        <label for="floatingInput" class="form-label">First Name</label>
                     </div>
                     <div class="form-floating col-md-6">
-                        <select class="form-select" id="floatingSelect" name="status" required>
-                            <option value="">Select status</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                        <label for="floatingSelect" class="form-label">Status</label>
+                        <input type="text" class="form-control" id="floatingInput" name="last_name" required>
+                        <label for="floatingInput" class="form-label">Last Name</label>
                     </div>
-                    <div class="form-floating col-md-12">
-                        <textarea class="form-control" id="floatingTextarea" name="description" rows="3"></textarea>
-                        <label for="floatingTextarea" class="form-label">Description</label>
-                    </div>
-                    <div class="form-floating col-md-6">
-                        <input type="date" class="form-control" id="floatingInput" name="dueDate" required>
-                        <label for="dueDate" class="floatingInput">Due Date</label>
-                    </div>
-                    <div class="form-floating col-md-6">
-                        <select name="userId" id="floatingSelect" class="form-select" required>
-                            <option value="">Assign To (Employee)</option>
-                            <%
-                                if(!employeeList.isEmpty()){
-                                    for(Employee emp: employeeList){
-                            %>
-                            <option value="<%= emp.getEmployeeId() %>"><%= emp.getEmployeeId() %> : <%= emp.getLastName() %> <%= emp.getFirstName() %></option>
-                            <%
-                                    }
-                                }
-                            %>
-                        </select>
-                    </div>
+
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Create Task</button>
+                        <button type="submit" class="btn btn-primary">Create Employee</button>
                     </div>
                 </div>
             </form>
@@ -214,8 +185,8 @@
     <!-- Task List Section -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Task List</span>
-            <span>Number of tasks: <%= taskList != null ? taskList.size() : 0 %></span>
+            <span>Employee List</span>
+            <span>Number of Employees: <%= employeeList != null ? employeeList.size() : 0 %></span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -223,50 +194,31 @@
                     <thead class="table-light">
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <%
-                        if(taskList != null){
-                            for(Task task: taskList){
-                                String badge = "secondary";
-
-                                if (task.getStatus() != null) {
-                                    String status = task.getStatus();
-                                    if (status.equalsIgnoreCase("pending")) {
-                                        badge = "status-pending";
-                                    } else if (status.equalsIgnoreCase("completed")) {
-                                        badge = "status-completed";
-                                    } else if (status.equalsIgnoreCase("in progress")) {
-                                        badge = "status-progress";
-                                    }
-                                }
-
+                        if(employeeList != null){
+                            for(Employee employee: employeeList){
                     %>
                     <tr>
-                        <td><%= task.getId() %></td>
-                        <td><a href="<%= request.getContextPath() %>/viewTask?taskId=<%= task.getId() %>"><%= task.getTitle() %></a> </td>
-                        <td><%= task.getDescription() %></td>
-                        <td class="text-center"><span class="status-badge <%= badge %>"><%= task.getStatus() %></span></td>
-                        <td><%= task.getDueDate() %></td>
-                        <td><%= task.getUserId() %></td>
+                        <td><%= employee.getEmployeeId() %></td>
+                        <td><%= employee.getFirstName() %></td>
+                        <td><%= employee.getLastName() %></td>
                         <td>
-                            <a href="<%= request.getContextPath() %>/viewTask?taskId=<%= task.getId() %>" class="btn btn-sm btn-primary">View</a>
+                            <a href="<%= request.getContextPath() %>/deleteEmployee?employeeId=<%= employee.getEmployeeId() %>" class="btn btn-sm btn-danger" onauxclick="alert('Are you sure you want to delete employee: <%= employee.getEmployeeId() %>')">Delete</a>
                         </td>
                     </tr>
                     <%
-                            }
-                        }else{
+                        }
+                    }else{
                     %>
-                        <tr>
-                            <td colspan="7" class="text-center py-4">No tasks found. Create your first task above.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="7" class="text-center py-4">No Employees found.</td>
+                    </tr>
                     <% }%>
                     </tbody>
 
