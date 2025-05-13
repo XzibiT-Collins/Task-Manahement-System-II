@@ -58,4 +58,13 @@ public class Task {
     public void setStatus(String status) {
         this.status = status;
     }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 }

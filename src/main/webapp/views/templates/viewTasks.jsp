@@ -256,38 +256,38 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="<%= request.getContextPath() %>/updateTask" method="post">
+                <form class="updateTaskForm" action="<%= request.getContextPath() %>/updateTask" method="post">
                     <input type="hidden" name="taskId" value="<%= task.getId() %>">
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="updateTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="updateTitle" name="title" value="<%= task.getTitle() %>" required>
+                        <div class="form-floating col-md-6">
+                            <input type="text" class="form-control" id="floatingInput" name="title" value="<%= task.getTitle() %>" required>
+                            <label for="floatingInput" class="form-label">Title</label>
                         </div>
-                        <div class="col-md-6">
-                            <label for="updateStatus" class="form-label">Status</label>
-                            <select class="form-select" id="updateStatus" name="status" required>
+                        <div class="form-floating col-md-6">
+                            <select class="form-select" id="floatingSelect" name="status" required>
                                 <option value="Pending" <%= task.getStatus().equals("Pending") ? "selected" : "" %>>Pending</option>
                                 <option value="In Progress" <%= task.getStatus().equals("In Progress") ? "selected" : "" %>>In Progress</option>
                                 <option value="Completed" <%= task.getStatus().equals("Completed") ? "selected" : "" %>>Completed</option>
                                 <option value="Cancelled" <%= task.getStatus().equals("Cancelled") ? "selected" : "" %>>Cancelled</option>
                             </select>
+                            <label for="floatingSelect" class="form-label">Status</label>
                         </div>
-                        <div class="col-md-12">
-                            <label for="updateDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="updateDescription" name="description" rows="3"><%= task.getDescription() %></textarea>
+                        <div class="form-floating col-md-12">
+                            <textarea class="form-control" id="floatingTextarea" name="description" rows="3"><%= task.getDescription() %></textarea>
+                            <label for="floatingTextarea" class="form-label">Description</label>
                         </div>
-                        <div class="col-md-6">
-                            <label for="updateDueDate" class="form-label">Due Date</label>
-                            <input type="date" class="form-control" id="updateDueDate" name="dueDate" value="<%= task.getDueDate() %>" required>
+                        <div class="form-floating col-md-6">
+                            <input type="date" class="form-control" id="floatingInput" name="dueDate" value="<%= task.getDueDate() %>" required>
+                            <label for="floatingInput" class="form-label">Due Date</label>
                         </div>
-                        <div class="col-md-6">
-                            <label for="updateUserId" class="form-label">Assigned To (User ID)</label>
-                            <input type="number" class="form-control" id="updateUserId" name="userId" value="<%= task.getUserId() %>" required>
+                        <div class="form-floating col-md-6">
+                            <input type="number" class="form-control" id="floatingInput" name="userId" value="<%= task.getUserId() %>" required>
+                            <label for="floatingInput" class="form-label">Assigned To (User ID)</label>
                         </div>
                     </div>
                     <div class="text-end mt-4">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary updateTask">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -304,5 +304,31 @@
 
 <!-- Bootstrap JS (for modal and navbar toggle) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    <%--$(document).ready(function(){--%>
+    <%--    $('.updateTaskForm').on('submit', function (e){--%>
+    <%--        e.preventDefault();--%>
+
+    <%--        var form = $(this).serialize();--%>
+
+    <%--        $.ajax({--%>
+    <%--            url: '<%= request.getContextPath() %>/updateTask',--%>
+    <%--            type: 'post',--%>
+    <%--            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },--%>
+    <%--            data: form,--%>
+    <%--            success: function (response){--%>
+    <%--                if(response.status === 'success'){--%>
+    <%--                    location.reload();--%>
+    <%--                }--%>
+    <%--            },--%>
+    <%--            error: function (error){--%>
+    <%--                alert('Error updating task');--%>
+    <%--            }--%>
+    <%--        })--%>
+
+    <%--    })--%>
+    <%--})--%>
+</script>
 </body>
 </html>
