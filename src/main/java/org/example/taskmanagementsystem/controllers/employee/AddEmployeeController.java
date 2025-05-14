@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 @WebServlet(name = "AddEmployeeController", value = "/addEmployee")
 public class AddEmployeeController extends HttpServlet {
     private final Logger logger = Logger.getLogger(AddEmployeeController.class.getName());
-    private String errorMessage;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -27,12 +26,15 @@ public class AddEmployeeController extends HttpServlet {
             List<Employee> employeeList = employeeDao.getAllEmployees();
 
             request.setAttribute("employeeList", employeeList);
-
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/employee/addEmployee.jsp");
             dispatcher.forward(request, response);
-
         }catch (SQLException e){
+
             logger.info("Error getting employee list: "+ e.getMessage());
+
+            request.setAttribute("errorMessage","Error getting employee list");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request, response);
         }
     }
 
@@ -42,9 +44,9 @@ public class AddEmployeeController extends HttpServlet {
         String lastName = request.getParameter("last_name");
 
         if(firstName.isBlank() && lastName.isBlank()){
-            errorMessage = "First name and last name are required";
+
+            request.setAttribute("errorMessage","First name and last name are required");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
-            request.setAttribute("errorMessage",errorMessage);
             dispatcher.forward(request, response);
         }
 
@@ -53,14 +55,14 @@ public class AddEmployeeController extends HttpServlet {
             Employee employee = new Employee(firstName,lastName);
 
             employeeDao.addEmployee(employee);
-
+            //redirect instead of using dispatch to prevent form resubmission
             response.sendRedirect(request.getContextPath() +"/addEmployee");
 
         }catch (SQLException e){
             logger.info("Error creating employee: "+ e.getMessage());
-            errorMessage = "Error creating employee";
+
+            request.setAttribute("errorMessage","Error creating employee");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
-            request.setAttribute("errorMessage",errorMessage);
             dispatcher.forward(request, response);
         }
     }

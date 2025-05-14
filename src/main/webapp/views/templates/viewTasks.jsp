@@ -1,7 +1,9 @@
 <%@ page import="org.example.taskmanagementsystem.models.Task" %>
+<%@ page import="org.example.taskmanagementsystem.models.Employee" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-
+    List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
     Task task = (Task) request.getAttribute("task");
 %>
 <!DOCTYPE html>
@@ -281,8 +283,34 @@
                             <label for="floatingInput" class="form-label">Due Date</label>
                         </div>
                         <div class="form-floating col-md-6">
-                            <input type="number" class="form-control" id="floatingInput" name="userId" value="<%= task.getUserId() %>" required>
-                            <label for="floatingInput" class="form-label">Assigned To (User ID)</label>
+                            <select name="userId" id="floatingSelect" class="form-select">
+                                <option value="<%= task.getUserId() %>">
+                                    <%
+                                        Employee employee = null;
+                                    %>
+                                    <%
+                                        employee = employeeList.stream()
+                                                .filter(emp -> emp.getEmployeeId() == task.getUserId())
+                                                .findFirst()
+                                                .orElse(null);
+                                        if(employee != null){
+                                    %>
+                                    <%= employee.getEmployeeId() %> : <%= employee.getLastName() %> <%= employee.getFirstName() %>
+                                    <%
+                                        }
+                                    %>
+
+                                </option>
+                                <%
+                                    for (Employee emp : employeeList) {
+
+                                %>
+                                <option value="<%=emp.getEmployeeId()%>"> <%=emp.getEmployeeId()%> :
+                                <%=emp.getLastName()%> <%=emp.getFirstName()%></option>
+                            <%
+                                    }
+                                %>
+                            </select>
                         </div>
                     </div>
                     <div class="text-end mt-4">

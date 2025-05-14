@@ -19,12 +19,28 @@ public class UpdateTaskController extends HttpServlet {
     private final Logger logger = Logger.getLogger(UpdateTaskController.class.getName());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String taskId_str = request.getParameter("taskId");
+        String date_str = request.getParameter("dueDate");
+        if(taskId_str == null || taskId_str.isEmpty() || date_str == null || date_str.isEmpty()){
+
+            request.setAttribute("errorMessage","Please enter a valid task ID or a valid date");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
+
         int taskId = Integer.parseInt(request.getParameter("taskId"));
         String status = request.getParameter("status");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         Date dueDate = Date.valueOf(request.getParameter("dueDate"));
         int userId =Integer.parseInt(request.getParameter("userId"));
+
+        if(title.isBlank() || description.isBlank() || status.isBlank() || dueDate == null){
+
+            request.setAttribute("errorMessage","Required fields are missing");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
 
         //get and update task status
         try{
@@ -44,7 +60,12 @@ public class UpdateTaskController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/viewTasks.jsp");
             dispatcher.forward(request, response);
         }catch (SQLException e){
+
             logger.info("Error updating task"+ e.getMessage());
+
+            request.setAttribute("errorMessage","Error updating task");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request, response);
         }
     }
 }
