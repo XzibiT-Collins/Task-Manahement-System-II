@@ -24,6 +24,7 @@ public class DeleteEmployeeController extends HttpServlet {
             request.setAttribute("errorMessage","Employee id is required");
             RequestDispatcher dispatcher = request.getRequestDispatcher("view/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         int employeeId = Integer.parseInt(request.getParameter("employeeId"));
@@ -33,11 +34,12 @@ public class DeleteEmployeeController extends HttpServlet {
             request.setAttribute("errorMessage","Employee id must be greater than 0");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         try{
 
-            EmployeeDao employeeDao = new EmployeeDao();
+            EmployeeDao employeeDao = createEmployeeDao(); //separating creatio of DAO for testing purposes
             employeeDao.deleteEmployee(employeeId);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/addEmployee");
@@ -48,8 +50,12 @@ public class DeleteEmployeeController extends HttpServlet {
             logger.info("Error deleting employee: "+ e.getMessage());
 
             request.setAttribute("errorMessage","Error deleting employee");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("view/templates/errors/error.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
         }
+    }
+
+    protected EmployeeDao createEmployeeDao(){
+        return new EmployeeDao();
     }
 }
