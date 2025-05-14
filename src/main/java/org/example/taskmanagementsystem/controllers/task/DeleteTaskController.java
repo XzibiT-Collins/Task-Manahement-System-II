@@ -17,17 +17,29 @@ public class DeleteTaskController extends HttpServlet {
     private final Logger logger = Logger.getLogger(DeleteTaskController.class.getName());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String taskId_str = request.getParameter("taskId");
+
+        if(taskId_str == null || taskId_str.isEmpty()){
+
+            request.setAttribute("errorMessage","Please enter a valid task ID");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
+
         int taskId = Integer.parseInt(request.getParameter("taskId"));
 
         try{
             TaskDao taskDao = new TaskDao();
             taskDao.deleteTask(taskId);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/addTask");
-            dispatcher.forward(request,response);
-
+            response.sendRedirect(request.getContextPath() +"/addTask");
         }catch (SQLException e){
+
             logger.info("Error deleting task: "+ e.getMessage());
+
+            request.setAttribute("errorMessage","Unable to delete task");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
         }
     }
 }

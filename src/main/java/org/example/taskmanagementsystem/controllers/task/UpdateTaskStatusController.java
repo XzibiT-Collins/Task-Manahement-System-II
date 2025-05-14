@@ -18,8 +18,24 @@ public class UpdateTaskStatusController extends HttpServlet {
     private final Logger logger = Logger.getLogger(UpdateTaskStatusController.class.getName());
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int taskId = Integer.parseInt(request.getParameter("taskId"));
+        String taskId_str = request.getParameter("taskId");
         String status = request.getParameter("status");
+
+        if(!status.equalsIgnoreCase("Completed") && !status.equalsIgnoreCase("In Progress") && !status.equalsIgnoreCase("Pending")){
+
+            request.setAttribute("errorMessage","Invalid task status specified");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
+
+        if(taskId_str == null || taskId_str.isEmpty()){
+
+            request.setAttribute("errorMessage","Please enter a valid task ID");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
+
+        int taskId = Integer.parseInt(request.getParameter("taskId"));
 
         //get and update task status
         try{
@@ -35,6 +51,10 @@ public class UpdateTaskStatusController extends HttpServlet {
             dispatcher.forward(request, response);
         }catch (SQLException e){
             logger.info("Error in updating task status"+ e.getMessage());
+
+            request.setAttribute("errorMessage","Error updating task status");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request, response);
         }
     }
 }

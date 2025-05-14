@@ -25,7 +25,7 @@ public class AddTaskController extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+
         try {
             TaskDao taskDao = new TaskDao();
             List<Task> taskList = taskDao.getAllTasks(); // get all Tasks
@@ -44,9 +44,10 @@ public class AddTaskController extends HttpServlet{
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage());
-            out.println("<html><body>");
-            out.println("<h1>An Error occurred</h1>");
-            out.println("</body></html>");
+
+            request.setAttribute("errorMessage","Error getting task list");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request, response);
         }
     }
 
@@ -54,11 +55,26 @@ public class AddTaskController extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         //call dao to create a new task
+        String id_str = request.getParameter("userId");
+        if(id_str.isEmpty()){
+
+            request.setAttribute("errorMessage","User id is required");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
+        //get all other inputs and convert
         int userId = Integer.parseInt(request.getParameter("userId"));
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String status = request.getParameter("status");
         Date dueDate = Date.valueOf(request.getParameter("dueDate"));
+
+        if(userId <= 0 || title.isBlank() || description.isBlank() || status.isBlank() || dueDate == null){
+
+            request.setAttribute("errorMessage","Required fields are missing");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
+        }
 
         try{
             TaskDao taskDao = new TaskDao();
@@ -68,7 +84,12 @@ public class AddTaskController extends HttpServlet{
 
             response.sendRedirect(request.getContextPath() +"/addTask"); // redirect user
         }catch (SQLException e){
+
             logger.info("Error creating task: "+ e.getMessage());
+
+            request.setAttribute("errorMessage","Error adding task.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
+            dispatcher.forward(request,response);
         }
     }
 }
