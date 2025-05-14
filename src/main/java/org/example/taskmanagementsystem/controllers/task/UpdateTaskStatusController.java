@@ -26,6 +26,7 @@ public class UpdateTaskStatusController extends HttpServlet {
             request.setAttribute("errorMessage","Invalid task status specified");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         if(taskId_str == null || taskId_str.isEmpty()){
@@ -33,6 +34,7 @@ public class UpdateTaskStatusController extends HttpServlet {
             request.setAttribute("errorMessage","Please enter a valid task ID");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         int taskId = Integer.parseInt(request.getParameter("taskId"));

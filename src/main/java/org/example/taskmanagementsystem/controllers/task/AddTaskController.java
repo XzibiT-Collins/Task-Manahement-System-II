@@ -61,6 +61,7 @@ public class AddTaskController extends HttpServlet{
             request.setAttribute("errorMessage","User id is required");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
         //get all other inputs and convert
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -74,6 +75,7 @@ public class AddTaskController extends HttpServlet{
             request.setAttribute("errorMessage","Required fields are missing");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         try{

@@ -29,6 +29,7 @@ public class ViewTasks extends HttpServlet {
             request.setAttribute("errorMessage","Please enter a valid task Id");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         int taskId = Integer.parseInt(request.getParameter("taskId"));
