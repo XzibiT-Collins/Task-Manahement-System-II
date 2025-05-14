@@ -26,6 +26,7 @@ public class UpdateTaskController extends HttpServlet {
             request.setAttribute("errorMessage","Please enter a valid task ID or a valid date");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         int taskId = Integer.parseInt(request.getParameter("taskId"));
@@ -40,6 +41,7 @@ public class UpdateTaskController extends HttpServlet {
             request.setAttribute("errorMessage","Required fields are missing");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request,response);
+            return;
         }
 
         //get and update task status

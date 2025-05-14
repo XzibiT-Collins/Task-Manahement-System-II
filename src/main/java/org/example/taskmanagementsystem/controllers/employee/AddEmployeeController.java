@@ -48,6 +48,7 @@ public class AddEmployeeController extends HttpServlet {
             request.setAttribute("errorMessage","First name and last name are required");
             RequestDispatcher dispatcher = request.getRequestDispatcher("views/templates/errors/error.jsp");
             dispatcher.forward(request, response);
+            return;
         }
 
         try{
