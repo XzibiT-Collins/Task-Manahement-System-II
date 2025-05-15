@@ -128,6 +128,13 @@
             padding: 1.5rem 0;
             margin-top: 2rem;
         }
+
+        .filter-section {
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -217,7 +224,25 @@
             <span>Task List</span>
             <span>Number of tasks: <%= taskList != null ? taskList.size() : 0 %></span>
         </div>
-        <div class="card-body p-0">
+        <div class="card-body">
+            <!-- Task Filter Section -->
+            <div class="filter-section mb-4">
+                <form action="<%= request.getContextPath() %>/filterTasks" method="get" class="row g-2 align-items-center">
+                    <div class="col-md-4">
+                        <label for="statusFilter" class="form-label fw-bold">Filter by Status:</label>
+                        <select class="form-select" id="statusFilter" name="status">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
@@ -261,12 +286,12 @@
                         </td>
                     </tr>
                     <%
-                            }
-                        }else{
+                        }
+                    }else{
                     %>
-                        <tr>
-                            <td colspan="7" class="text-center py-4">No tasks found. Create your first task above.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="7" class="text-center py-4">No tasks found. Create your first task above.</td>
+                    </tr>
                     <% }%>
                     </tbody>
 
